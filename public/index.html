@@ -11,77 +11,52 @@
 <body>
 <div class="app">
 
-  <header>
-    <div class="brand">
-      <div class="brand-title">Mars Transmission</div>
-      <div class="brand-sub">Rover Photography Archive</div>
+  <div class="brand-title">Mars Transmission</div>
+
+  <div class="photo-viewport" id="viewport">
+    <img id="photo" alt="Mars rover photograph" />
+  </div>
+
+  <div class="scan-effect" id="scanEffect"></div>
+
+  <div class="photo-overlay" id="overlay">
+    <div class="photo-meta">
+      <div class="rover-name" id="roverName"></div>
+      <div class="camera-name" id="cameraName"></div>
     </div>
-    <div class="signal-badge">
-      <div class="signal-dot"></div>
-      <span>Signal Active</span>
-    </div>
-  </header>
-
-  <main>
-    <div class="transmission-frame" id="frame">
-      <div class="corner-mark tl"></div>
-      <div class="corner-mark tr"></div>
-      <div class="corner-mark bl"></div>
-      <div class="corner-mark br"></div>
-
-      <div class="scan-effect" id="scanEffect"></div>
-
-      <div class="photo-viewport" id="viewport">
-        <img id="photo" alt="Mars rover photograph" />
+    <div class="photo-data">
+      <div class="data-row">
+        <span class="data-label">CENTER</span>
+        <span class="data-value" id="solValue"></span>
       </div>
-
-      <div class="photo-overlay" id="overlay">
-        <div class="photo-meta">
-          <div class="rover-name" id="roverName"></div>
-          <div class="camera-name" id="cameraName"></div>
-        </div>
-        <div class="photo-data">
-          <div class="data-row">
-            <span class="data-label">CENTER</span>
-            <span class="data-value" id="solValue"></span>
-          </div>
-          <div class="data-row">
-            <span class="data-label">DATE</span>
-            <span class="data-value" id="dateValue"></span>
-          </div>
-          <div class="data-row">
-            <span class="data-label">NASA ID</span>
-            <span class="data-value" id="idValue"></span>
-          </div>
-        </div>
+      <div class="data-row">
+        <span class="data-label">DATE</span>
+        <span class="data-value" id="dateValue"></span>
       </div>
-
-      <div class="loading-state" id="loadingState">
-        <div class="loading-ring"></div>
-        <div class="loading-text">
-          Searching archive for<br>
-          <span class="loading-rover" id="loadingRover">MARS ROVER</span>
-        </div>
-      </div>
-
-      <div class="error-state" id="errorState">
-        <div class="error-icon">&#x25C7;</div>
-        <div class="error-msg" id="errorMsg">Transmission lost. Retrying uplink.</div>
+      <div class="data-row">
+        <span class="data-label">NASA ID</span>
+        <span class="data-value" id="idValue"></span>
       </div>
     </div>
+  </div>
 
-    <div class="controls">
-      <button class="explore-btn" id="exploreBtn">New Transmission</button>
-      <div class="photo-count" id="photoCount"></div>
-    </div>
-  </main>
+  <div class="controls">
+    <button class="explore-btn" id="exploreBtn">New Transmission</button>
+    <div class="photo-count" id="photoCount"></div>
+  </div>
 
-  <footer>
-    <div class="footer-left">NASA Open API &middot; JPL</div>
-    <div class="footer-right">
-      <a href="https://api.nasa.gov/" target="_blank" rel="noopener">api.nasa.gov</a>
+  <div class="loading-state" id="loadingState">
+    <div class="loading-ring"></div>
+    <div class="loading-text">
+      Searching archive for<br>
+      <span class="loading-rover" id="loadingRover">MARS ROVER</span>
     </div>
-  </footer>
+  </div>
+
+  <div class="error-state" id="errorState">
+    <div class="error-icon">&#x25C7;</div>
+    <div class="error-msg" id="errorMsg">Transmission lost. Retrying uplink.</div>
+  </div>
 
 </div>
 

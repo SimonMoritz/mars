@@ -2,16 +2,12 @@
 
 :root {
   --bg-deep: #0a0806;
-  --bg-surface: #121010;
-  --bg-card: #1a1614;
   --mars-rust: #c1440e;
   --mars-ember: #e8621a;
   --mars-sand: #d4a574;
-  --mars-dust: #9c7b5c;
   --text-primary: #e8e0d8;
   --text-secondary: #8a7e74;
   --text-dim: #5a5048;
-  --signal-green: #4a9e6d;
 }
 
 html, body {
@@ -19,19 +15,7 @@ html, body {
   background: var(--bg-deep);
   color: var(--text-primary);
   font-family: 'Instrument Sans', sans-serif;
-  overflow-x: hidden;
-}
-
-/* Ambient glow */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 0%, rgba(193,68,14,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 100%, rgba(156,123,92,0.04) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
+  overflow: hidden;
 }
 
 /* Grain overlay */
@@ -45,31 +29,18 @@ body::after {
   z-index: 9999;
 }
 
-/* ── Layout ── */
 .app {
   position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
 }
 
-/* ── Header ── */
-header {
-  padding: 2rem 2.5rem 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.brand {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
+/* ── Brand ── */
 .brand-title {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 10;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.65rem;
   font-weight: 700;
@@ -78,77 +49,11 @@ header {
   text-transform: uppercase;
 }
 
-.brand-sub {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.55rem;
-  font-weight: 300;
-  letter-spacing: 0.2em;
-  color: var(--text-dim);
-}
-
-.signal-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.15em;
-  color: var(--text-dim);
-}
-
-.signal-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--signal-green);
-  box-shadow: 0 0 8px rgba(74,158,109,0.5);
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-/* ── Main Content ── */
-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 2rem 2.5rem 2rem;
-  gap: 1.5rem;
-}
-
-/* ── Transmission Frame ── */
-.transmission-frame {
-  position: relative;
-  flex: 1;
-  min-height: 400px;
-  border: 1px solid rgba(193,68,14,0.15);
-  border-radius: 2px;
-  overflow: hidden;
-  background: var(--bg-surface);
-}
-
-.transmission-frame::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--mars-rust), transparent);
-  opacity: 0.4;
-  z-index: 5;
-}
-
-/* ── Photo ── */
+/* ── Fullscreen Photo ── */
 .photo-viewport {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: 1;
 }
 
 .photo-viewport img {
@@ -166,7 +71,7 @@ main {
 
 /* ── Scan Effect ── */
 .scan-effect {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 3;
   pointer-events: none;
@@ -208,50 +113,15 @@ main {
   );
 }
 
-/* ── Corner Markers ── */
-.corner-mark {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  z-index: 4;
-  opacity: 0.35;
-}
-
-.corner-mark::before,
-.corner-mark::after {
-  content: '';
-  position: absolute;
-  background: var(--mars-rust);
-}
-
-.corner-mark::before { height: 1px; width: 100%; }
-.corner-mark::after { width: 1px; height: 100%; }
-
-.corner-mark.tl { top: 8px; left: 8px; }
-.corner-mark.tl::before { top: 0; left: 0; }
-.corner-mark.tl::after { top: 0; left: 0; }
-
-.corner-mark.tr { top: 8px; right: 8px; }
-.corner-mark.tr::before { top: 0; right: 0; }
-.corner-mark.tr::after { top: 0; right: 0; }
-
-.corner-mark.bl { bottom: 8px; left: 8px; }
-.corner-mark.bl::before { bottom: 0; left: 0; }
-.corner-mark.bl::after { bottom: 0; left: 0; }
-
-.corner-mark.br { bottom: 8px; right: 8px; }
-.corner-mark.br::before { bottom: 0; right: 0; }
-.corner-mark.br::after { bottom: 0; right: 0; }
-
-/* ── Photo Overlay ── */
+/* ── Photo Overlay (bottom) ── */
 .photo-overlay {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 3rem 1.5rem 1.25rem;
-  background: linear-gradient(0deg, rgba(10,8,6,0.92) 0%, rgba(10,8,6,0.6) 60%, transparent 100%);
-  z-index: 4;
+  padding: 4rem 1.5rem 1.5rem;
+  background: linear-gradient(0deg, rgba(10,8,6,0.88) 0%, rgba(10,8,6,0.5) 60%, transparent 100%);
+  z-index: 5;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -307,9 +177,58 @@ main {
 .data-label { color: var(--text-dim); }
 .data-value { color: var(--mars-sand); }
 
+/* ── Controls (bottom-right, above overlay) ── */
+.controls {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.explore-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: rgba(10,8,6,0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(193,68,14,0.3);
+  padding: 0.7rem 1.4rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 1px;
+}
+
+.explore-btn:hover {
+  border-color: var(--mars-rust);
+  color: var(--mars-sand);
+  background: rgba(10,8,6,0.7);
+}
+
+.explore-btn:active {
+  transform: scale(0.98);
+}
+
+.explore-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.photo-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+}
+
 /* ── Loading State ── */
 .loading-state {
-  position: absolute;
+  position: fixed;
   inset: 0;
   display: flex;
   flex-direction: column;
@@ -355,7 +274,7 @@ main {
 
 /* ── Error State ── */
 .error-state {
-  position: absolute;
+  position: fixed;
   inset: 0;
   display: flex;
   flex-direction: column;
@@ -388,116 +307,15 @@ main {
   line-height: 1.6;
 }
 
-/* ── Controls ── */
-.controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.explore-btn {
-  position: relative;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  background: transparent;
-  border: 1px solid rgba(193,68,14,0.3);
-  padding: 0.9rem 2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 1px;
-  overflow: hidden;
-}
-
-.explore-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(193,68,14,0.08), rgba(232,98,26,0.04));
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.explore-btn:hover {
-  border-color: var(--mars-rust);
-  color: var(--mars-sand);
-}
-
-.explore-btn:hover::before {
-  opacity: 1;
-}
-
-.explore-btn:active {
-  transform: scale(0.98);
-}
-
-.explore-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-.photo-count {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.55rem;
-  letter-spacing: 0.15em;
-  color: var(--text-dim);
-}
-
-/* ── Footer ── */
-footer {
-  padding: 1rem 2.5rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-top: 1px solid rgba(90,80,72,0.1);
-}
-
-.footer-left,
-.footer-right {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.5rem;
-  letter-spacing: 0.2em;
-  color: var(--text-dim);
-  text-transform: uppercase;
-}
-
-.footer-right a {
-  color: var(--text-dim);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.footer-right a:hover {
-  color: var(--mars-sand);
-}
-
 /* ── Responsive ── */
 @media (max-width: 640px) {
-  header { padding: 1.25rem 1.25rem 0; }
-  main { padding: 1.25rem; }
-  footer { padding: 1rem 1.25rem 1.25rem; }
-
-  .rover-name { font-size: 1.3rem; }
-
+  .brand-title { top: 1rem; left: 1rem; }
+  .controls { top: 1rem; right: 1rem; }
   .photo-overlay {
-    padding: 2.5rem 1rem 1rem;
+    padding: 3rem 1rem 1rem;
     flex-direction: column;
     align-items: flex-start;
   }
-
   .photo-data { align-items: flex-start; }
-
-  .controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .explore-btn { text-align: center; }
-  .photo-count { text-align: center; }
-  .brand-sub { display: none; }
-  .transmission-frame { min-height: 300px; }
+  .rover-name { font-size: 1.3rem; }
 }
