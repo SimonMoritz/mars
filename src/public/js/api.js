@@ -1,11 +1,11 @@
 const IMAGE_API = 'https://images-api.nasa.gov';
 
 const SEARCH_QUERIES = [
-  'mars rover',
-  'perseverance mars',
-  'curiosity rover mars',
-  'mars surface',
-  'artemis',
+  // 'mars rover',
+  // 'perseverance mars',
+  // 'curiosity rover mars',
+  // 'mars surface',
+  // 'artemis',
   'mars landscape',
 ];
 
