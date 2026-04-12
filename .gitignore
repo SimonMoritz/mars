@@ -8,3 +8,16 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Scraper output
+scraper/output.json
+scraper/images/
+scraper/upload-progress.json
+scraper/kv-bulk.json
+scraper/kv-index.json
+
+# Node
+node_modules/
+
+# Deploy
+.wrangler

@@ -1,0 +1,29 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "mars-transmission",
+	"main": "src/index.js",
+	"compatibility_date": "2026-04-12",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"assets": {
+		"directory": "./public"
+	},
+	"kv_namespaces": [
+		{
+			"binding": "PHOTOS_KV",
+			"id": "27ff0fba44bd4e57b7b9ab71ccbd43a5"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "MARS_IMAGES",
+			"bucket_name": "mars-images"
+		},
+		{
+			"bucket_name": "mars-images",
+			"binding": "mars_images",
+			"remote": true
+		}
+	]
+}

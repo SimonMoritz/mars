@@ -1,4 +1,4 @@
-import { pickRandomQuery, fetchRandomPhoto } from './api.js';
+import { fetchRandomPhoto } from './api.js';
 import { initUI, showLoading, showError, showPhoto, updatePhotoCount, onExploreClick } from './ui.js';
 
 const MAX_RETRIES = 3;
@@ -9,11 +9,10 @@ async function loadRandomPhoto(retries = MAX_RETRIES) {
   if (isLoading) return;
   isLoading = true;
 
-  const query = pickRandomQuery();
-  showLoading(query);
+  showLoading('MARS ARCHIVE');
 
   try {
-    const photo = await fetchRandomPhoto(query);
+    const photo = await fetchRandomPhoto();
 
     if (!photo) {
       if (retries > 0) {
