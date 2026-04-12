@@ -6,11 +6,14 @@ import { execSync } from 'child_process';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const WORKER_DIR = join(__dirname, '..', 'worker');
 
-const R2_BUCKET = 'mars-images';
-const KV_NAMESPACE_ID = '27ff0fba44bd4e57b7b9ab71ccbd43a5';
-
-// R2 public URL — update this after enabling public access on the bucket
-const R2_PUBLIC_URL = `https://mars-images.${process.env.CF_ACCOUNT_ID || 'ACCOUNT_ID'}.r2.dev`;
+// Read config from wrangler.jsonc
+const wranglerConfig = JSON.parse(
+    readFileSync(join(WORKER_DIR, 'wrangler.jsonc'), 'utf-8')
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/\/\/.*/g, '')
+);
+const R2_BUCKET = wranglerConfig.r2_buckets[0].bucket_name;
+const KV_NAMESPACE_ID = wranglerConfig.kv_namespaces[0].id;
 
 const IMAGES_DIR = join(__dirname, 'images');
 const CONCURRENCY = 5;
