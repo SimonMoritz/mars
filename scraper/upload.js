@@ -1,9 +1,8 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import { execSync } from 'child_process';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 const WORKER_DIR = join(__dirname, '..', 'worker');
 
 // Read config from wrangler.jsonc
