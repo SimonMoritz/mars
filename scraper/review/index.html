@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mars Transmission — Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@300;400;500;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="app">
+
+  <div class="brand-title">Mars Transmission · Review</div>
+
+  <div class="photo-viewport" id="viewport">
+    <img id="photo" alt="" />
+  </div>
+
+  <div class="photo-overlay" id="overlay">
+    <div class="photo-meta">
+      <div class="rover-name" id="title"></div>
+      <div class="camera-name" id="subtitle"></div>
+    </div>
+    <div class="photo-data">
+      <div class="data-row"><span class="data-label">CENTER</span><span class="data-value" id="center"></span></div>
+      <div class="data-row"><span class="data-label">DATE</span><span class="data-value" id="date"></span></div>
+      <div class="data-row"><span class="data-label">NASA ID</span><span class="data-value" id="nasaId"></span></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="decision-btn reject" id="rejectBtn" title="Reject (← or R)">Reject</button>
+    <button class="decision-btn keep" id="keepBtn" title="Keep (→ or K)">Keep</button>
+    <button class="decision-btn ghost" id="undoBtn" title="Undo (U)">Undo</button>
+    <button class="decision-btn ghost" id="finalizeBtn" title="Write output.reviewed.json">Finalize</button>
+    <div class="photo-count" id="count"></div>
+  </div>
+
+  <div class="loading-state" id="loadingState">
+    <div class="loading-ring"></div>
+    <div class="loading-text">Downloading image…</div>
+  </div>
+
+  <div class="error-state" id="errorState">
+    <div class="error-icon">&#x25C7;</div>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <div class="done-state" id="doneState">
+    <div class="done-title">Review complete</div>
+    <div class="done-sub" id="doneSub"></div>
+    <button class="decision-btn keep" id="finalizeBtn2">Write output.reviewed.json</button>
+  </div>
+
+</div>
+
+<script type="module" src="/review.js"></script>
+</body>
+</html>

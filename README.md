@@ -22,7 +22,11 @@ scratch/         API exploration scripts
 # Scrape NASA image metadata
 node scraper/scrape.js
 
-# Upload images to R2 and metadata to KV
+# Review photos at http://localhost:8787 (→/K keep, ←/R reject, U undo)
+# Click Finalize when done to write scraper/output.reviewed.json
+node scraper/review.js
+
+# Upload reviewed images to R2 and metadata to KV
 node scraper/upload.js
 
 # Run locally
