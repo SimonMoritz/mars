@@ -94,8 +94,13 @@ async function uploadKVBulk(entries) {
 }
 
 async function main() {
-    const photos = JSON.parse(readFileSync(join(__dirname, 'output.json'), 'utf-8'));
-    console.log(`Uploading ${photos.length} photos to R2 and KV...\n`);
+    const reviewedPath = join(__dirname, 'output.reviewed.json');
+    if (!existsSync(reviewedPath)) {
+        console.error(`Missing ${reviewedPath}. Run "node scraper/review.js" and finalize the review before uploading.`);
+        process.exit(1);
+    }
+    const photos = JSON.parse(readFileSync(reviewedPath, 'utf-8'));
+    console.log(`Uploading ${photos.length} reviewed photos to R2 and KV...\n`);
 
     mkdirSync(IMAGES_DIR, { recursive: true });
 

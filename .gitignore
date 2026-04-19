@@ -11,6 +11,8 @@ wheels/
 
 # Scraper output
 scraper/output.json
+scraper/output.reviewed.json
+scraper/review-progress.json
 scraper/images/
 scraper/upload-progress.json
 scraper/kv-bulk.json
