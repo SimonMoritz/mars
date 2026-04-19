@@ -6,6 +6,10 @@
 	"compatibility_flags": [
 		"nodejs_compat"
 	],
+	"routes": [
+		{ "pattern": "framesfrommars.com", "custom_domain": true },
+		{ "pattern": "www.framesfrommars.com", "custom_domain": true }
+	],
 	"assets": {
 		"directory": "./public"
 	},
