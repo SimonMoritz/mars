@@ -4,13 +4,15 @@ const IDS = [
   'photo', 'overlay', 'scanEffect', 'loadingState',
   'errorState', 'loadingRover', 'exploreBtn', 'photoCount',
   'roverName', 'cameraName', 'solValue', 'dateValue',
-  'idValue', 'errorMsg',
+  'idValue', 'errorMsg', 'description', 'fullImageLink',
+  'overlayToggle', 'descriptionPanel',
 ];
 
 export function initUI() {
   for (const id of IDS) {
     elements[id] = document.getElementById(id);
   }
+  elements.app = document.querySelector('.app');
 }
 
 export function showLoading(query) {
@@ -21,6 +23,7 @@ export function showLoading(query) {
   elements.photo.classList.remove('revealed');
   elements.errorState.classList.remove('active');
   elements.exploreBtn.disabled = true;
+  setDescriptionExpanded(false);
 }
 
 export function showError(message) {
@@ -48,7 +51,11 @@ export function showPhoto(photoData) {
         elements.solValue.textContent = photoData.center;
         elements.dateValue.textContent = photoData.date;
         elements.idValue.textContent = photoData.nasaId;
+        elements.description.textContent =
+          stripHtml(photoData.description).trim() || 'No description available.';
+        elements.fullImageLink.href = photoData.imageUrl;
 
+        setDescriptionExpanded(false);
         elements.overlay.classList.add('visible');
         elements.exploreBtn.disabled = false;
 
@@ -68,4 +75,32 @@ export function updatePhotoCount(count) {
 
 export function onExploreClick(handler) {
   elements.exploreBtn.addEventListener('click', handler);
+}
+
+export function setDescriptionExpanded(expanded) {
+  elements.app.classList.toggle('expanded', expanded);
+  elements.descriptionPanel.setAttribute('aria-hidden', String(!expanded));
+  elements.overlayToggle.setAttribute('aria-expanded', String(expanded));
+  elements.overlayToggle.setAttribute(
+    'aria-label',
+    expanded ? 'Hide description' : 'Show description'
+  );
+}
+
+export function isDescriptionExpanded() {
+  return elements.app.classList.contains('expanded');
+}
+
+export function onToggleDescription(handler) {
+  elements.overlayToggle.addEventListener('click', handler);
+}
+
+export function isInsideDescription(target) {
+  return !!target.closest('#descriptionPanel');
+}
+
+function stripHtml(html) {
+  if (!html) return '';
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  return doc.body.textContent || '';
 }

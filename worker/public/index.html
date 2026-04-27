@@ -11,7 +11,10 @@
 <body>
 <div class="app">
 
-  <div class="brand-title">Mars Transmission</div>
+  <div class="brand">
+    <div class="brand-title">Mars Transmission</div>
+    <div class="brand-subtitle">NASA Image Archive &middot; Public Domain</div>
+  </div>
 
   <div class="photo-viewport" id="viewport">
     <img id="photo" alt="Mars rover photograph" />
@@ -19,23 +22,36 @@
 
   <div class="scan-effect" id="scanEffect"></div>
 
+  <div class="description-panel" id="descriptionPanel" aria-hidden="true">
+    <div class="description-label">NASA Archive Description</div>
+    <p class="photo-description" id="description"></p>
+    <a class="full-image-link" id="fullImageLink" href="#" target="_blank" rel="noopener">
+      <span aria-hidden="true">&#x2197;</span> View Full Image
+    </a>
+  </div>
+
   <div class="photo-overlay" id="overlay">
-    <div class="photo-meta">
-      <div class="rover-name" id="roverName"></div>
-      <div class="camera-name" id="cameraName"></div>
-    </div>
-    <div class="photo-data">
-      <div class="data-row">
-        <span class="data-label">CENTER</span>
-        <span class="data-value" id="solValue"></span>
+    <button class="overlay-toggle" id="overlayToggle" aria-label="Show description" aria-expanded="false" aria-controls="descriptionPanel">
+      <span class="overlay-toggle-icon" aria-hidden="true">&#x2191;</span>
+    </button>
+    <div class="photo-meta-row">
+      <div class="photo-meta">
+        <div class="rover-name" id="roverName"></div>
+        <div class="camera-name" id="cameraName"></div>
       </div>
-      <div class="data-row">
-        <span class="data-label">DATE</span>
-        <span class="data-value" id="dateValue"></span>
-      </div>
-      <div class="data-row">
-        <span class="data-label">NASA ID</span>
-        <span class="data-value" id="idValue"></span>
+      <div class="photo-data">
+        <div class="data-row">
+          <span class="data-label">CENTER</span>
+          <span class="data-value" id="solValue"></span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">DATE</span>
+          <span class="data-value" id="dateValue"></span>
+        </div>
+        <div class="data-row">
+          <span class="data-label">NASA ID</span>
+          <span class="data-value" id="idValue"></span>
+        </div>
       </div>
     </div>
   </div>
