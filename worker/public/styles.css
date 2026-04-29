@@ -446,8 +446,6 @@ body::after {
 /* ── Responsive ── */
 @media (max-width: 640px) {
   .brand { top: 1rem; left: 1rem; }
-  .brand-subtitle { display: flex; flex-direction: column; gap: 0.2rem; }
-  .brand-sep { display: none; }
   .controls {
     top: 1rem;
     right: 1rem;

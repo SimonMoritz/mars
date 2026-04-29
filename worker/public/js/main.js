@@ -1,4 +1,4 @@
-import { fetchRandomPhoto } from './api.js';
+import { fetchPhotoIndex, fetchPhoto } from './api.js';
 import {
   initUI, showLoading, showError, showPhoto, updatePhotoCount,
   onExploreClick, setDescriptionExpanded, isDescriptionExpanded,
@@ -13,38 +13,58 @@ let totalFetched = 0;
 let isLoading = false;
 let lastWheelAt = 0;
 
-async function loadRandomPhoto(retries = MAX_RETRIES) {
+let order = [];
+let position = -1;
+
+function shuffleInPlace(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+async function loadAt(newPosition, retries = MAX_RETRIES) {
   if (isLoading) return;
+  if (!order.length) {
+    showError('No photographs available.');
+    return;
+  }
   isLoading = true;
 
   showLoading('MARS ARCHIVE');
 
   try {
-    const photo = await fetchRandomPhoto();
-
-    if (!photo) {
-      if (retries > 0) {
-        isLoading = false;
-        return loadRandomPhoto(retries - 1);
-      }
-      showError('No photographs found at this location. Try again.');
-      isLoading = false;
-      return;
-    }
-
+    const photo = await fetchPhoto(order[newPosition]);
     await showPhoto(photo);
+    position = newPosition;
 
     totalFetched++;
     updatePhotoCount(totalFetched);
   } catch (err) {
     if (retries > 0) {
       isLoading = false;
-      return loadRandomPhoto(retries - 1);
+      return loadAt(newPosition, retries - 1);
     }
     showError('Transmission interrupted. Check connection and retry.');
   }
 
   isLoading = false;
+}
+
+function loadNextPhoto() {
+  let next = position + 1;
+  if (next >= order.length) {
+    shuffleInPlace(order);
+    next = 0;
+    position = -1;
+  }
+  return loadAt(next);
+}
+
+function loadPreviousPhoto() {
+  if (position <= 0) return;
+  return loadAt(position - 1);
 }
 
 function handleWheel(e) {
@@ -63,15 +83,19 @@ function handleWheel(e) {
   }
 }
 
-function init() {
+async function init() {
   initUI();
-  onExploreClick(() => loadRandomPhoto());
+  onExploreClick(() => loadNextPhoto());
   onToggleDescription(() => setDescriptionExpanded(!isDescriptionExpanded()));
 
   document.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' && !isLoading) {
+    if (isLoading) return;
+    if (e.code === 'Space' || e.code === 'ArrowRight') {
       e.preventDefault();
-      loadRandomPhoto();
+      loadNextPhoto();
+    } else if (e.code === 'ArrowLeft') {
+      e.preventDefault();
+      loadPreviousPhoto();
     }
   });
 
@@ -84,7 +108,17 @@ function init() {
     setDescriptionExpanded(false);
   });
 
-  loadRandomPhoto();
+  showLoading('MARS ARCHIVE');
+  try {
+    const ids = await fetchPhotoIndex();
+    order = shuffleInPlace(ids.slice());
+    position = -1;
+  } catch (err) {
+    showError('Transmission interrupted. Check connection and retry.');
+    return;
+  }
+
+  loadNextPhoto();
 }
 
 init();

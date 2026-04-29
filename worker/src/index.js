@@ -2,8 +2,13 @@ export default {
 	async fetch(request, env) {
 		const url = new URL(request.url);
 
-		if (url.pathname === '/api/random') {
-			return handleRandom(env);
+		if (url.pathname === '/api/photos') {
+			return handlePhotosIndex(env);
+		}
+
+		if (url.pathname.startsWith('/api/photo/')) {
+			const id = decodeURIComponent(url.pathname.slice('/api/photo/'.length));
+			return handlePhoto(id, env);
 		}
 
 		if (url.pathname.startsWith('/img/')) {
@@ -14,10 +19,11 @@ export default {
 	},
 };
 
-async function handleRandom(env) {
+async function handlePhotosIndex(env) {
 	const headers = {
 		'Content-Type': 'application/json',
 		'Access-Control-Allow-Origin': '*',
+		'Cache-Control': 'public, max-age=300',
 	};
 
 	const indexRaw = await env.PHOTOS_KV.get('photos:index');
@@ -28,10 +34,16 @@ async function handleRandom(env) {
 		});
 	}
 
-	const ids = JSON.parse(indexRaw);
-	const randomId = ids[Math.floor(Math.random() * ids.length)];
+	return new Response(indexRaw, { headers });
+}
 
-	const photoRaw = await env.PHOTOS_KV.get(`photo:${randomId}`);
+async function handlePhoto(id, env) {
+	const headers = {
+		'Content-Type': 'application/json',
+		'Access-Control-Allow-Origin': '*',
+	};
+
+	const photoRaw = await env.PHOTOS_KV.get(`photo:${id}`);
 	if (!photoRaw) {
 		return new Response(JSON.stringify({ error: 'Photo not found' }), {
 			status: 404,
