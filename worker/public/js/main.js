@@ -8,10 +8,15 @@ import {
 const MAX_RETRIES = 3;
 const WHEEL_DEBOUNCE_MS = 400;
 const WHEEL_THRESHOLD = 20;
+const SWIPE_THRESHOLD = 50;
 
 let totalFetched = 0;
 let isLoading = false;
 let lastWheelAt = 0;
+
+let touchStartX = 0;
+let touchStartY = 0;
+let touchTracking = false;
 
 let order = [];
 let position = -1;
@@ -67,6 +72,43 @@ function loadPreviousPhoto() {
   return loadAt(position - 1);
 }
 
+function handleTouchStart(e) {
+  if (e.touches.length !== 1) {
+    touchTracking = false;
+    return;
+  }
+  if (isInsideDescription(e.target)) {
+    touchTracking = false;
+    return;
+  }
+  const t = e.touches[0];
+  touchStartX = t.clientX;
+  touchStartY = t.clientY;
+  touchTracking = true;
+}
+
+function handleTouchEnd(e) {
+  if (!touchTracking) return;
+  touchTracking = false;
+  if (isLoading) return;
+  if (e.changedTouches.length !== 1) return;
+
+  const t = e.changedTouches[0];
+  const dx = t.clientX - touchStartX;
+  const dy = t.clientY - touchStartY;
+  const absDx = Math.abs(dx);
+  const absDy = Math.abs(dy);
+
+  if (Math.max(absDx, absDy) < SWIPE_THRESHOLD) return;
+
+  if (absDx > absDy) {
+    if (dx < 0) loadNextPhoto();
+    else loadPreviousPhoto();
+  } else {
+    setDescriptionExpanded(dy < 0);
+  }
+}
+
 function handleWheel(e) {
   if (isLoading) return;
   if (isInsideDescription(e.target)) return;
@@ -100,6 +142,8 @@ async function init() {
   });
 
   document.addEventListener('wheel', handleWheel, { passive: true });
+  document.addEventListener('touchstart', handleTouchStart, { passive: true });
+  document.addEventListener('touchend', handleTouchEnd, { passive: true });
 
   document.addEventListener('click', (e) => {
     if (!isDescriptionExpanded()) return;
