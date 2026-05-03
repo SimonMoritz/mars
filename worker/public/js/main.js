@@ -29,7 +29,7 @@ function shuffleInPlace(arr) {
   return arr;
 }
 
-async function loadAt(newPosition, retries = MAX_RETRIES) {
+async function loadAt(newPosition, retries = MAX_RETRIES, { updateUrl = true } = {}) {
   if (isLoading) return;
   if (!order.length) {
     showError('No photographs available.');
@@ -40,16 +40,24 @@ async function loadAt(newPosition, retries = MAX_RETRIES) {
   showLoading('MARS ARCHIVE');
 
   try {
-    const photo = await fetchPhoto(order[newPosition]);
+    const id = order[newPosition];
+    const photo = await fetchPhoto(id);
     await showPhoto(photo);
     position = newPosition;
+
+    if (updateUrl) {
+      const target = `/photo/${encodeURIComponent(id)}`;
+      if (window.location.pathname !== target) {
+        history.pushState({ id }, '', target);
+      }
+    }
 
     totalFetched++;
     updatePhotoCount(totalFetched);
   } catch (err) {
     if (retries > 0) {
       isLoading = false;
-      return loadAt(newPosition, retries - 1);
+      return loadAt(newPosition, retries - 1, { updateUrl });
     }
     showError('Transmission interrupted. Check connection and retry.');
   }
@@ -152,6 +160,14 @@ async function init() {
     setDescriptionExpanded(false);
   });
 
+  window.addEventListener('popstate', () => {
+    const id = idFromPath(window.location.pathname);
+    if (id) {
+      const idx = order.indexOf(id);
+      if (idx !== -1) loadAt(idx, MAX_RETRIES, { updateUrl: false });
+    }
+  });
+
   showLoading('MARS ARCHIVE');
   try {
     const ids = await fetchPhotoIndex();
@@ -162,7 +178,24 @@ async function init() {
     return;
   }
 
+  const initialId = idFromPath(window.location.pathname);
+  if (initialId) {
+    const idx = order.indexOf(initialId);
+    if (idx !== -1) {
+      return loadAt(idx, MAX_RETRIES, { updateUrl: false });
+    }
+  }
+
   loadNextPhoto();
+}
+
+function idFromPath(pathname) {
+  if (!pathname.startsWith('/photo/')) return null;
+  try {
+    return decodeURIComponent(pathname.slice('/photo/'.length));
+  } catch {
+    return null;
+  }
 }
 
 init();

@@ -40,6 +40,9 @@ export function showPhoto(photoData) {
 
     img.onload = () => {
       elements.photo.src = photoData.imageUrl;
+      elements.photo.alt = photoData.title
+        ? `${photoData.title} — Mars image from the NASA archive`
+        : 'Mars photograph from the NASA archive';
 
       requestAnimationFrame(() => {
         elements.photo.classList.add('revealed');

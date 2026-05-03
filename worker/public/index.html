@@ -10,24 +10,37 @@
 <meta property="og:url" content="https://framesfrommars.com/">
 <meta property="og:title" content="Frames From Mars — NASA Mars Photo Archive">
 <meta property="og:description" content="A fullscreen viewer for Mars photographs from the NASA image archive. Discover rover and orbiter imagery one transmission at a time.">
+<meta property="og:image" content="https://framesfrommars.com/favicon-framesfrommars.svg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Frames From Mars — NASA Mars Photo Archive">
 <meta name="twitter:description" content="A fullscreen viewer for Mars photographs from the NASA image archive. Discover rover and orbiter imagery one transmission at a time.">
-<link rel="icon" type="image/svg+xml" href="favicon-framesfrommars.svg">
+<meta name="twitter:image" content="https://framesfrommars.com/favicon-framesfrommars.svg">
+<link rel="icon" type="image/svg+xml" href="/favicon-framesfrommars.svg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Frames From Mars",
+  "alternateName": "Mars Transmission",
+  "url": "https://framesfrommars.com/",
+  "description": "A fullscreen viewer for Mars photographs from the NASA image archive. Browse imagery from rovers, landers, and orbiters one transmission at a time."
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@300;400;500;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <div class="app">
 
-  <div class="brand">
-    <div class="brand-title">Mars Transmission</div>
+  <header class="brand">
+    <h1 class="brand-title">Mars Transmission</h1>
+    <p class="brand-tagline">NASA Mars images — rovers, orbiters, surface science</p>
     <div class="brand-subtitle"><span>Image Credit: NASA</span></div>
-  </div>
+  </header>
 
   <div class="photo-viewport" id="viewport">
-    <img id="photo" alt="Mars rover photograph" />
+    <img id="photo" alt="Mars photograph from the NASA archive" />
   </div>
 
   <div class="scan-effect" id="scanEffect"></div>
@@ -86,6 +99,6 @@
 
 </div>
 
-<script type="module" src="js/main.js"></script>
+<script type="module" src="/js/main.js"></script>
 </body>
 </html>

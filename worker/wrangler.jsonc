@@ -11,7 +11,8 @@
 		{ "pattern": "www.framesfrommars.com", "custom_domain": true }
 	],
 	"assets": {
-		"directory": "./public"
+		"directory": "./public",
+		"binding": "ASSETS"
 	},
 	"kv_namespaces": [
 		{
