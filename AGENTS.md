@@ -11,7 +11,7 @@ A fullscreen Mars photo viewer backed by Cloudflare Workers, R2, and KV.
 ## Key details
 
 - Frontend is vanilla HTML/CSS/JS (no framework, no bundler). Files live in `worker/public/`.
-- The worker entry point is `worker/src/index.js`. Static assets are served by Cloudflare's asset binding; only `/api/photos`, `/api/photo/:id`, and `/img/*` are handled by the worker code.
+- The worker entry point is `worker/src/index.js`. Static assets are served by Cloudflare's asset binding; the worker handles `/api/photos`, `/api/photo/:id`, `/img/*`, `/sitemap.xml`, and `/photo/:id` (server-rendered SEO HTML built by HTMLRewriting the asset shell).
 - KV schema: `photos:index` holds a JSON array of all NASA IDs. `photo:{nasaId}` holds metadata for each photo. Image URLs in KV point to `/img/{filename}` which the worker proxies from R2.
 - R2 bucket: `mars-images`. Objects are keyed by `{nasaId}.{ext}`.
 - The scraper search queries are configured in `scraper/scrape.js` (`SEARCH_QUERIES` array).

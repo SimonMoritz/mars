@@ -65,14 +65,14 @@ async function loadAt(newPosition, retries = MAX_RETRIES, { updateUrl = true } =
   isLoading = false;
 }
 
-function loadNextPhoto() {
+function loadNextPhoto({ updateUrl = true } = {}) {
   let next = position + 1;
   if (next >= order.length) {
     shuffleInPlace(order);
     next = 0;
     position = -1;
   }
-  return loadAt(next);
+  return loadAt(next, MAX_RETRIES, { updateUrl });
 }
 
 function loadPreviousPhoto() {
@@ -186,7 +186,7 @@ async function init() {
     }
   }
 
-  loadNextPhoto();
+  loadNextPhoto({ updateUrl: false });
 }
 
 function idFromPath(pathname) {
